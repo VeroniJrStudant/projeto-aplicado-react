@@ -21,6 +21,7 @@
 .card__spec-value {
   font-size: 1rem;
   text-transform: uppercase;
+  font-weight: bold;
 }
 
 .card__spec-value--fire {
@@ -50,4 +51,10 @@
 
 .cardDescItem {
   margin: 1rem 0;
+}
+
+.pokePropertyItem {
+  display: inline-block;
+  margin: 0 0.2rem;
+  color: #333;
 }

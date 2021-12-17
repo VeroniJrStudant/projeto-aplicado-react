@@ -1,35 +1,57 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
+import { fetchAllPokemons } from "./services/pokemons-service";
+
 import { Card } from "./components/Card";
 import { Header } from "./components/Header";
+
 import styles from "./App.module.css";
 
-import { getPokemons } from "./services/pokemons";
-
 function App() {
-  const [pokemons, setPokemons] = useState([]);
-  const [pokemonsFiltrados, setPokemonsFiltrados] = useState([]);
+  const pokemons = useRef([]);
+  const elementoTopo = useRef();
 
+  const [pokemonsFiltrados, setPokemonsFiltrados] = useState([]);
+  const [pagina, setPagina] = useState(1);
   const [termoBusca, setTermoBusca] = useState("");
 
+  const qtdMaximaPaginas = Math.ceil(pokemons.current.length / 40);
+
   useEffect(() => {
-    console.log("useEffect fetch");
-    getPokemons().then((listaPoke) => {
-      setPokemons(listaPoke);
-      setPokemonsFiltrados(listaPoke);
-    });
+    // IIFE Imediately Invoked Function Expression
+    (async () => {
+      const lista = await fetchAllPokemons();
+      pokemons.current = lista;
+      setPokemonsFiltrados(filtrarListaPorPagina(pokemons.current, pagina));
+    })();
+    // :)
+    //eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    const listaFiltrada = pokemons.filter((pokemon) => {
-      return new RegExp(termoBusca, "ig").test(pokemon.name);
-    });
-    setPokemonsFiltrados(listaFiltrada);
+    setPokemonsFiltrados(filtrarListaPorTermoDeBusca(pokemons.current, termoBusca));
   }, [termoBusca]);
+
+  useEffect(() => {
+    setPokemonsFiltrados(filtrarListaPorPagina(pokemons.current, pagina));
+  }, [pagina]);
+
+  const handlePagAnterior = () => {
+    setPagina((pagAtual) => (pagAtual > 1 ? pagAtual - 1 : 1));
+  };
+
+  const handleProxPagina = () => {
+    setPagina((pagAtual) => (pagAtual >= qtdMaximaPaginas ? qtdMaximaPaginas : pagAtual + 1));
+  };
+
+  const handleVoltarAoTopo = () => {
+    elementoTopo.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <>
       <Header />
-      <div className={styles.container}>
+      <div ref={elementoTopo} className={styles.container}>
         <input
           onChange={(event) => {
             setTermoBusca(event.target.value);
@@ -38,16 +60,42 @@ function App() {
           type="text"
           placeholder="Digite o nome do pokemon"
         />
-        {termoBusca}
-        <h1 className={styles.pageTitle}>All pokemons</h1>
+
+        <div className={styles.sectionTitle}>
+          <h1 className={styles.pageTitle}>Todos os pokemons ({pokemonsFiltrados.length})</h1>
+          <div className={styles.pagination}>
+            <button className={styles.pageButton} onClick={handlePagAnterior}>
+              {`<`}
+            </button>
+            <span>
+              Página {pagina} de {qtdMaximaPaginas}
+            </span>
+            <button className={styles.pageButton} onClick={handleProxPagina}>
+              {`>`}
+            </button>
+          </div>
+        </div>
+
         <div className={styles.cardGrid}>
           {pokemonsFiltrados.length === 0
             ? "Nenhum pokemon encontrado"
             : pokemonsFiltrados.map((pokemon) => <Card pokemon={pokemon} />)}
         </div>
+        <button onClick={handleVoltarAoTopo}>Voltar para o topo</button>
       </div>
     </>
   );
 }
+
+const filtrarListaPorTermoDeBusca = (lista, termo) => {
+  return lista.filter((pokemon) => {
+    return new RegExp(termo, "ig").test(pokemon.name);
+  });
+};
+
+const filtrarListaPorPagina = (lista, pagina) => {
+  const QTD_ITENS = 40;
+  return lista.slice(pagina * QTD_ITENS - QTD_ITENS, pagina * QTD_ITENS);
+};
 
 export default App;
