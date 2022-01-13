@@ -1,11 +1,29 @@
 import React from 'react';
-import { ExemplouseReducer } from './components/ExemplouseReducer';
+import { Header } from './components/Header';
 
+// import { Consumidor, Consumidor2 } from './components/Consumidor';
+// import { AutenticacaoProvider } from './contexts/autenticacao';
 import { Pokemons } from './components/Pokemons';
+import { Paginacao } from './components/Paginacao/Paginacao';
+import { PokemonProvider } from './contexts/pokemon';
 
 function App() {
-  // return <Pokemons />;
-  return <ExemplouseReducer />;
+  return (
+    <>
+      <PokemonProvider>
+        <Header />
+
+        <Paginacao />
+
+        <Pokemons />
+      </PokemonProvider>
+
+      {/* <AutenticacaoProvider>
+     <Consumidor />
+       <Consumidor2 />
+    </AutenticacaoProvider> */}
+    </>
+  );
 }
 
 export default App;
