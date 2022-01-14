@@ -1,10 +1,10 @@
 export const fetchAllPokemons = async () => {
   try {
-    const response = await fetch("https://pokedex2.p.rapidapi.com/pokedex/uk", {
-      method: "GET",
+    const response = await fetch(process.env.REACT_APP_URL, {
+      method: 'GET',
       headers: {
-        "x-rapidapi-host": "pokedex2.p.rapidapi.com",
-        "x-rapidapi-key": "6df3122cc9msh5136a8c179643fbp19f3b0jsn5c53098507aa",
+        'x-rapidapi-host': process.env.REACT_APP_HOST,
+        'x-rapidapi-key': process.env.REACT_APP_KEY,
       },
     });
     const listaPoke = await response.json();

@@ -35,7 +35,7 @@ const PokemonPropertiesItem = ({ title, list }) => {
     <div className={styles.cardDescItem}>
       <span className={styles['card__spec-title']}>{title}</span>
       <div className={styles['card__spec-value']}>
-        {list.map((property) => (
+        {list?.map((property) => (
           <span key={property} className={styles.pokePropertyItem} style={{ color: COLOR_MAP[property] }}>
             {property}
           </span>

@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
+import { PokemonPage } from '../components/PokemonPage';
 
 const Home = () => {
   return (
@@ -53,6 +54,7 @@ export const Router = () => (
   <Routes>
     <Route path="/" element={<Home />} />
     <Route path="exemplo/:idExemplo" element={<Exemplo />} />
+    <Route path="pokemon" element={<PokemonPage />} />
     <Route path="*" element={<p>Qualquer outra coisa</p>} />
   </Routes>
 );
