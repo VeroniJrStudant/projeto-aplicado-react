@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { Header } from './components/Header';
 
 // import { Consumidor, Consumidor2 } from './components/Consumidor';
@@ -6,17 +7,22 @@ import { Header } from './components/Header';
 import { Pokemons } from './components/Pokemons';
 import { Paginacao } from './components/Paginacao/Paginacao';
 import { PokemonProvider } from './contexts/pokemon';
+import { Router } from './routes/Router';
 
 function App() {
   return (
     <>
-      <PokemonProvider>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+
+      {/* <PokemonProvider>
         <Header />
 
         <Paginacao />
 
         <Pokemons />
-      </PokemonProvider>
+      </PokemonProvider> */}
 
       {/* <AutenticacaoProvider>
      <Consumidor />
