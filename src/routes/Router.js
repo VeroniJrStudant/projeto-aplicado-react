@@ -2,6 +2,8 @@ import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 import { PokemonPage } from '../components/PokemonPage';
+import { Cadastro } from '../components/Cadastro';
+import { Formulario } from '../components/Formulario/Formulario';
 
 const Home = () => {
   return (
@@ -52,9 +54,11 @@ const Exemplo = () => {
 
 export const Router = () => (
   <Routes>
-    <Route path="/" element={<Home />} />
+    {/* <Route path="/" element={<Home />} /> */}
+    <Route path="/" element={<Formulario />} />
     <Route path="exemplo/:idExemplo" element={<Exemplo />} />
     <Route path="pokemon" element={<PokemonPage />} />
+    <Route path ="styled" element={<Cadastro/>} />
     <Route path="*" element={<p>Qualquer outra coisa</p>} />
   </Routes>
 );
